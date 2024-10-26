@@ -6,8 +6,12 @@ const archiver = require('archiver');
 
 const helpers = require('../utils/helpers.js');
 
+const authenticator = require('../middleware/auth.js')
+
 const File_Server_BASE_URL = "../FileServer";
 const BIN_BASE_URL = "../BIN";
+
+router.use(authenticator);
 
 router.get('/ping', function (req, res, next) {
     res.send('pong');

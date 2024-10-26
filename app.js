@@ -1,23 +1,33 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var fileUpload = require('express-fileupload');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const fileUpload = require('express-fileupload');
+const session = require('express-session');
 
-var directoryRouter = require('./routes/directory');
+const directoryRouter = require('./routes/directory.js');
+const usersRouter = require('./routes/users.js');
 
-var cors = require('cors');
+const cors = require('cors');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-  exposedHeaders: ['Content-Disposition'], 
+  origin: 'http://localhost:5173', 
+  credentials: true, 
+  exposedHeaders: ['Content-Disposition'],
+}));
+app.use(session({
+  secret: "OPENAI_API_KEY",
+  saveUninitialized: true,
+  resave: true
 }));
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/users',usersRouter);
 app.use('/directory',directoryRouter);
 
 var port = 3000;

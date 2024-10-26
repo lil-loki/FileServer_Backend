@@ -1,7 +1,8 @@
 node_modules/
 FileServer/
 BIN/
-
+DB/
+profileImages/
 
 .eslintcache
 .env
